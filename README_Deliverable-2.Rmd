@@ -1,0 +1,51 @@
+---
+title: "Readme_Deliverable-2"
+author: "Prasanthi"
+date: "2026-08-02"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+**README**
+
+**Dataset Source**
+
+This project uses the [**Inside Airbnb**](https://insideairbnb.com/get-the-data/) listings dataset for New Zealand. The dataset contains information about Airbnb listings, including listing details, host information, location, pricing, availability, and guest reviews.
+
+**Dataset:** listings.csv
+
+The data was downloaded from the Inside Airbnb project, which provides publicly available Airbnb data for research and analysis.
+
+**Scrape Date:** 19^th^ of June 2026
+
+**Dataset Columns**
+
+| **Column** | Description |
+|----------------------------------|---------------------------------------------------------------|
+| **id** | Unique identifier for each Airbnb listing |
+| **name** | Title of the Airbnb listing |
+| **host_id** | Unique identifier for the host |
+| **host_name** | Name of the host |
+| **neighbourhood_group** | District or territorial authority where the listing is located |
+| **neighbourhood** | Local ward or neighbourhood of the listing |
+| **latitude** | Latitude coordinate of the listing |
+| **longitude** | Longitude coordinate of the listing |
+| **room_type** | Type of accommodation (Entire home/apartment, Private room, Shared room, or Hotel room) |
+| **price** | Nightly rental price (NZD) |
+| **minimum_nights** | Minimum number of nights required for a booking |
+| **number_of_reviews** | Total number of reviews received by the listing |
+| **last_review** | Date of the most recent guest review |
+| **reviews_per_month** | Average number of reviews received per month |
+| **calculated_host_listings_count** | Number of active listings managed by the same host |
+| **availability_365** | Number of days the listing is available for booking during the next 365 days |
+| **number_of_reviews_ltm** | Number of reviews received during the last 12 months |
+| **license** | Registration or licence number |
+
+N.B.:
+
+• Each row represents a single Airbnb listing.
+
+• Missing values occur in columns last_review, reviews_per_month, and license.
