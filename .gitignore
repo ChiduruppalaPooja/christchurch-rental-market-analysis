@@ -1,4 +1,17 @@
-.Rproj.user
+# RStudio
+.Rproj.user/
+
 .Rhistory
+
 .RData
+
 .Ruserdata
+
+# Quarto
+.quarto/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
