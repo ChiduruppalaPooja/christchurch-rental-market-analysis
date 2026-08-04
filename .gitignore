@@ -1,17 +1,23 @@
 # RStudio
 .Rproj.user/
 
+# History
 .Rhistory
 
+# Workspace
 .RData
-
 .Ruserdata
 
 # Quarto
 .quarto/
 
-# macOS
-.DS_Store
+# knitr cache
+*_cache/
+_cache/
 
-# Windows
+# OS
+.DS_Store
 Thumbs.db
+
+# Logs
+*.log

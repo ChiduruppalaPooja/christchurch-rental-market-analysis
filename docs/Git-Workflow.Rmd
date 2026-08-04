@@ -1,0 +1,186 @@
+---
+title: "Git Workflow"
+author: "Pooja Chiduruppala"
+date: "21 July 2026"
+output: html_document
+---
+
+# Christchurch Rental Market Analysis
+
+## Git & Development Workflow
+
+**Version:** 1.0
+
+**Maintainer:** Pooja
+
+**Last Updated:** 21 July 2026
+
+---
+
+# 1. Purpose
+
+This document defines the Git workflow, branch management strategy, and collaboration process used throughout the Christchurch Rental Market Analysis project.
+
+### Objectives
+
+- Maintain a stable development environment.
+- Prevent accidental overwrites.
+- Minimise merge conflicts.
+- Ensure all deliverables are reviewed before becoming part of the project.
+- Maintain a complete development history.
+
+---
+
+# 2. Repository Structure
+
+| Branch | Purpose | Who Can Push/Merge |
+|---------|---------|--------------------|
+| `main` | Final production version used for project submission | Pooja only |
+| `pre-prod` | Stable weekly release containing reviewed and verified code | Pooja only |
+| `staging` | Shared integration branch where completed team work is combined | Entire Team |
+| `pooja` | Personal development branch for Pooja | Pooja |
+| `prasanthi` | Personal development branch for Prasanthi | Prasanthi |
+| `robbie` | Personal development branch for Robbie | Robbie |
+| `sahil` | Personal development branch for Sahil | Sahil |
+
+---
+
+# 3. Branch Responsibilities
+
+## Personal Branches
+
+- Work only on your own branch.
+- Commit and push frequently.
+- Never modify another member's branch.
+
+## Staging
+
+- Shared collaboration branch.
+- Everyone may merge completed work here.
+- May contain work in progress.
+
+## Pre-prod
+
+- Weekly stable deliverable.
+- Only Pooja merges into this branch.
+- Code must be reviewed, documented, and validated before promotion.
+
+## Main
+
+- Final production/submission branch.
+- No development occurs directly on `main`.
+- Used only for the final project release.
+
+---
+
+# 4. Development Workflow
+
+```text
+                main
+                 ▲
+      Final Release
+                 │
+             pre-prod
+                 ▲
+      Weekly Review
+                 │
+             staging
+                 ▲
+      Team Integration
+                 │
+ Individual Branches
+(pooja, prasanthi, robbie, sahil)
+```
+
+---
+
+# 5. Weekly Development Cycle
+
+1. Pull the latest `staging` branch.
+2. Switch to your personal branch.
+3. Complete your assigned work.
+4. Commit regularly using meaningful commit messages.
+5. Push your branch.
+6. Merge your branch into `staging`.
+7. Repository Manager reviews the integration.
+8. Stable code is promoted to `pre-prod`.
+9. At project completion, `pre-prod` is merged into `main`.
+
+---
+
+# 6. Common Git Commands
+
+```bash
+git checkout staging
+git pull
+
+git checkout <your-branch>
+
+git add .
+git commit -m "Meaningful commit message"
+git push
+
+git checkout staging
+git pull
+git merge <your-branch>
+git push
+```
+
+---
+
+# 7. Commit Message Guidelines
+
+### Good Examples
+
+- Cleaned Airbnb dataset
+- Added tenancy API integration
+- Fixed missing values
+- Updated Week 5 documentation
+
+### Avoid
+
+- update
+- changes
+- test
+- abc
+
+---
+
+# 8. Branch Protection Policy
+
+| Branch | Policy |
+|---------|--------|
+| Personal branches | Direct commits allowed |
+| `staging` | Team members may merge |
+| `pre-prod` | Only Pooja may merge |
+| `main` | Only Pooja may merge for final release |
+
+---
+
+# 9. Definition of Done
+
+Before promoting `staging` to `pre-prod`:
+
+- [ ] Code runs successfully
+- [ ] Documentation updated
+- [ ] Outputs verified
+- [ ] Deliverable complete
+- [ ] Meaningful commit history
+- [ ] No unresolved merge conflicts
+
+---
+
+# 10. Responsibilities
+
+## Repository Manager (Pooja)
+
+- Review weekly deliverables.
+- Resolve merge conflicts.
+- Maintain `pre-prod` and `main`.
+
+## Team Members
+
+- Develop assigned features.
+- Maintain personal branches.
+- Merge completed work into `staging`.
+- Notify the Repository Manager after integration.
