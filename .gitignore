@@ -1,4 +1,23 @@
-.Rproj.user
+# RStudio
+.Rproj.user/
+
+# History
 .Rhistory
+
+# Workspace
 .RData
 .Ruserdata
+
+# Quarto
+.quarto/
+
+# knitr cache
+*_cache/
+_cache/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
