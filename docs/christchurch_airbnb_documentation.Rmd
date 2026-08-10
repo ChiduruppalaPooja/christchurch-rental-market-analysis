@@ -1,0 +1,350 @@
+---
+author: Analysis Documentation
+date: June 2026
+output: html_document
+title: Christchurch Airbnb Listings Analysis --- Data Preparation and
+  Outputs
+---
+
+# 1. Overview
+
+This R Markdown document documents the data preparation, merging,
+summary inspection, CSV export, and visualisations produced from the
+Christchurch Airbnb listings datasets.
+
+The analysis uses the `tidyverse` package and combines monthly
+Christchurch listing datasets covering **October 2025 to June 2026**.
+
+`{r setup, message=FALSE, warning=FALSE} library(tidyverse)`
+
+# 2. Part One --- Filter and Prepare the June 2026 Dataset
+
+## 2.1 Christchurch filtering
+
+The June 2026 listings dataset is filtered so that only records
+belonging to **Christchurch City** are retained.
+
+`{r filter-christchurch} chcListingsJun2026 <- listingsJun2026 %>%   filter(neighbourhood_group == "Christchurch City")`
+
+### Output
+
+**Object created:** `chcListingsJun2026`
+
+This dataframe contains the June 2026 listings for Christchurch City
+only.
+
+## 2.2 Add month and year variables
+
+Two variables are added to identify the month and year represented by
+the dataset.
+
+\`\`\`{r add-month-year} chcListingsJun2026 \<- chcListingsJun2026 \|\>
+mutate(data_month = "June")
+
+chcListingsJun2026 \<- chcListingsJun2026 \|\> mutate(data_year =
+"2026")
+
+
+    ### Output
+
+    The resulting dataframe contains:
+
+    - `data_month` — `"June"`
+    - `data_year` — `"2026"`
+
+    These variables provide explicit temporal information for the June 2026 observations.
+
+    # 3. Part Two — Merge Monthly Datasets
+
+    The Christchurch datasets from October 2025 through June 2026 are combined into a single dataframe using `rbind()`.
+
+    ```{r merge-datasets}
+    chcListingsTotal <- rbind(
+      chcListingsOct2025,
+      chcListingsNov2025,
+      chcListingsDec2025,
+      chcListingsJan2026,
+      chcListingsFeb2026,
+      chcListingsMar2026,
+      chcListingsApr2026,
+      chcListingsMay2026,
+      chcListingsJun2026
+    )
+
+## Output
+
+**Object created:** `chcListingsTotal`
+
+This dataframe represents the combined Christchurch listing data for:
+
+-   October 2025
+-   November 2025
+-   December 2025
+-   January 2026
+-   February 2026
+-   March 2026
+-   April 2026
+-   May 2026
+-   June 2026
+
+The purpose of this merged dataset is to provide one dataset for
+subsequent Christchurch-wide analysis across the nine-month period.
+
+# 4. Part Three --- Export the Merged Dataset
+
+The combined dataframe is exported as a CSV file.
+
+`{r export-csv} write.csv(chcListingsTotal, "chcListingsTotal.csv")`
+
+## Output
+
+**File produced:** `chcListingsTotal.csv`
+
+The CSV contains the records and variables contained in
+`chcListingsTotal`.
+
+This provides a reusable external copy of the processed Christchurch
+dataset.
+
+# 5. Part Four --- Inspect Room-Type Categories
+
+The unique room types in the combined dataset are identified.
+
+\`\`\`{r room-categories} categories \<-
+unique(chcListingsTotal\$room_type) numberOfCategories \<-
+length(categories)
+
+print(categories) print(numberOfCategories)
+
+
+    ## Outputs
+
+    ### `categories`
+
+    A vector containing the unique values of the `room_type` variable.
+
+    ### `numberOfCategories`
+
+    The number of unique room-type categories.
+
+    The values are printed to the R console for inspection.
+
+    # 6. Part Five — Inspect Character Variables
+
+    The code loops through every column in `chcListingsTotal` and identifies columns whose class is `character`.
+
+    ```{r character-columns}
+    for (i in colnames(chcListingsTotal)) {
+      if (class(chcListingsTotal[[i]]) == "character") {
+        print(chcListingsTotal[[i]])
+        print(length(unique(chcListingsTotal[[i]])))
+      }
+    }
+
+## Output
+
+For every character column, the R console displays:
+
+1.  The values contained in the column.
+2.  The number of unique values in that column.
+
+This provides a basic inspection of categorical/text variables in the
+dataset.
+
+# 7. Part Six --- Graph 1: Histogram of Listing Prices
+
+A filtered version of the combined dataset is created before producing
+the price histogram.
+
+`{r price-filter} chcListingsTotalFilt <- chcListingsTotal %>%   filter(price < 3000)`
+
+## Filtering criterion
+
+Only listings with:
+
+**Price \< NZD 3,000**
+
+are included in the histogram.
+
+Importantly, this filtering does **not** modify `chcListingsTotal`. It
+creates a separate dataframe called `chcListingsTotalFilt`.
+
+## Histogram
+
+`{r price-histogram} hist(   chcListingsTotalFilt$price,   breaks = 50,   xlab = "Price of Listing (nzd)",   main = "Histogram of listing prices in Christchurch" )`
+
+## Output
+
+**Graph:** Histogram of Christchurch listing prices.
+
+-   **X-axis:** Price of listing in NZD
+-   **Y-axis:** Frequency of listings
+-   **Number of bins:** 50
+-   **Price restriction:** Listings below NZD 3,000
+
+### Purpose
+
+The histogram is used to examine the distribution of listing prices in
+Christchurch while limiting the influence of extremely high-priced
+listings.
+
+# 8. Part Seven --- Graph 2: Days Since Last Review
+
+The number of days since each listing's last review is calculated.
+
+The reference/end date is:
+
+**21 June 2026**
+
+\`\`\`{r review-date-calculation} date_diffs \<- c()
+
+end_date \<- as.POSIXlt("2026-06-21")
+
+for (given_date in chcListingsTotal\$last_review) { if
+(!is.na(given_date) & given_date != "") { start_date \<-
+as.POSIXct(given_date) time_diff \<- difftime( end_date, start_date,
+units ="days" ) numeric_days \<- as.numeric(time_diff) date_diffs \<-
+c(date_diffs, numeric_days) } }
+
+
+    ## Output
+
+    **Object created:** `date_diffs`
+
+    This numeric vector contains the calculated number of days between each valid `last_review` date and 21 June 2026.
+
+    Listings with missing (`NA`) or empty `last_review` values are excluded from this calculation.
+
+    ## Histogram
+
+    ```{r review-histogram}
+    hist(
+      date_diffs,
+      xlab = "Days since last review",
+      main = "Histogram of days since last review"
+    )
+
+## Output
+
+**Graph:** Histogram of days since the last review.
+
+-   **X-axis:** Days since last review
+-   **Y-axis:** Frequency of listings
+-   **Reference date:** 21 June 2026
+
+### Purpose
+
+This visualisation shows how recently Christchurch listings received
+reviews and the distribution of time elapsed since their most recent
+review.
+
+# 9. Part Eight --- Graph 3: Top 10% of Listings by Number of Reviews
+
+The listings with the highest number of reviews are selected.
+
+`{r top-reviews} chcListingsTop10Per <- chcListingsTotal %>%   slice_max(     order_by = number_of_reviews,     prop = 0.1   )`
+
+## Output
+
+**Object created:** `chcListingsTop10Per`
+
+This dataframe contains approximately the **top 10% of listings based on
+`number_of_reviews`**.
+
+## Histogram
+
+`{r review-count-histogram} hist(   chcListingsTop10Per$number_of_reviews,   xlab = "Number of Reviews",   main = "Histogram of 90th percentile of total reviews in a listing" )`
+
+## Output
+
+**Graph:** Histogram of the number of reviews among the highest-reviewed
+listings.
+
+-   **X-axis:** Number of reviews
+-   **Y-axis:** Frequency of listings
+-   **Selection:** Approximately top 10% of listings by number of
+    reviews
+
+### Terminology note
+
+The code selects the **top 10% of listings**, rather than calculating
+the 90th percentile value itself. Therefore, a more technically precise
+description is:
+
+> **Histogram of number of reviews for the top 10% of listings.**
+
+# 10. Summary of Objects and Files Produced
+
+  ------------------------------------------------------------------------
+  Output                   Type                    Description
+  ------------------------ ----------------------- -----------------------
+  `chcListingsJun2026`     Dataframe               Christchurch City
+                                                   listings for June 2026
+
+  `chcListingsTotal`       Dataframe               Combined Christchurch
+                                                   listings from October
+                                                   2025 to June 2026
+
+  `chcListingsTotal.csv`   CSV file                Exported combined
+                                                   Christchurch dataset
+
+  `categories`             Vector                  Unique room-type
+                                                   categories
+
+  `numberOfCategories`     Numeric value           Number of unique
+                                                   room-type categories
+
+  Character-column console Console output          Values and unique-value
+  output                                           counts for character
+                                                   columns
+
+  `chcListingsTotalFilt`   Dataframe               Listings with price
+                                                   below NZD 3,000
+
+  `date_diffs`             Numeric vector          Days since last review
+                                                   relative to 21 June
+                                                   2026
+
+  `chcListingsTop10Per`    Dataframe               Approximately top 10%
+                                                   of listings by number
+                                                   of reviews
+
+  Price histogram          Graph                   Distribution of listing
+                                                   prices
+
+  Review-age histogram     Graph                   Distribution of days
+                                                   since last review
+
+  Top-review histogram     Graph                   Distribution of reviews
+                                                   among the top 10% of
+                                                   listings
+  ------------------------------------------------------------------------
+
+# 11. Overall Workflow
+
+The complete analysis workflow can be summarised as:
+
+**Filter Christchurch → Add temporal variables → Merge monthly datasets
+→ Export CSV → Inspect categorical variables → Filter extreme prices →
+Produce price histogram → Calculate review age → Produce review-age
+histogram → Select top 10% by reviews → Produce review-count histogram**
+
+# 12. Key Analytical Outputs
+
+The code therefore produces three primary visualisations:
+
+1.  **Listing Price Distribution**\
+    Examines the distribution of Christchurch listing prices below NZD
+    3,000.
+
+2.  **Days Since Last Review Distribution**\
+    Examines how recently Christchurch listings received their most
+    recent review as of 21 June 2026.
+
+3.  **Review Count Distribution for Top 10% of Listings**\
+    Examines the number of reviews among the listings with the highest
+    review counts.
+
+Together, these outputs provide an initial descriptive analysis of
+**listing prices, review activity, and highly reviewed listings** across
+Christchurch.
