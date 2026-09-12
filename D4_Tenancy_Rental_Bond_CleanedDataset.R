@@ -1,5 +1,5 @@
 ##Read Tenancy_Renta_Bond
-Tenancy_Rental_Bond_DATE_CLEANING <- read.csv("https://github.com/ChiduruppalaPooja/christchurch-rental-market-analysis/blob/staging/Tenancy_Rental_Bond_DATE_CLEANING.csv", header=TRUE)
+Tenancy_Rental_Bond_DATE_CLEANING <- read.csv("https://github.com/ChiduruppalaPooja/christchurch-rental-market-analysis/blob/staging/Tenancy_Rental_Bond_DATE_CLEANING.csv", header=TRUE, row.names = NULL)
 
 # Drop columns Upper_Quartile_Rent, Lower_Quartile_Rent and Log_Std_Dev_Weekly_Rent
 df_clean_column <- subset(Tenancy_Rental_Bond_DATE_CLEANING, select = -c(Upper_Quartile_Rent, Lower_Quartile_Rent, Log_Std_Dev_Weekly_Rent))
