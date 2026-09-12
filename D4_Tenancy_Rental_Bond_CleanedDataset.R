@@ -13,5 +13,6 @@ clean_df_na_Tenancy <- df_clean_column %>%
   mutate(across(where(is.character), ~na_if(., "NULL"))) %>%
   mutate(across(where(is.character), ~na_if(., "-99")))
 
+#The R script has the following function to drop rows with na data commented in the script. We have decided not to remove any unavailable data at this stage. 
 # Drop the rows
 # drop_na(clean_df_na_Tenancy)
